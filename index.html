@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>TDJ - Tropa da Jamaica</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#10b981;
+  --verde2:#34d399;
+  --verde3:#059669;
+  --preto:#050008;
+}
+body{
+  margin:0;
+  font-family:'Roboto',Arial,sans-serif;
+  background:#064e3b;
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* Partículas de fundo */
+canvas{
+  position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:-1;
+}
+
+/* Botão Voltar */
+#voltarBtn{
+  position:fixed;top:25px;right:25px;
+  padding:10px 22px;
+  border:none;border-radius:999px;
+  background:linear-gradient(135deg,var(--verde2),var(--verde3));
+  color:#fff;font-weight:bold;cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.6);
+  z-index:9999;
+  transition:.3s;
+  display:none;
+}
+#voltarBtn:hover{box-shadow:0 0 40px rgba(52,211,153,0.7);}
+
+/* Tela de boas-vindas */
+#welcome{
+  position:fixed;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  z-index:9999;
+  overflow:hidden;
+  background:#064e3b;
+}
+
+#welcome h1{
+  font-size:3em;
+  font-family:'Orbitron',sans-serif;
+  background:linear-gradient(90deg,var(--verde),var(--verde2),var(--verde3));
+  background-size:300% 300%;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 20px rgba(0,0,0,0.7);
+  margin-bottom:40px;
+  animation:gradientText 5s ease infinite;
+}
+
+/* animação das letras */
+@keyframes gradientText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* Botões menores e com efeito */
+#welcome .btnWelcome{
+  margin:12px;
+  padding:12px 35px;
+  font-size:1em;
+  border:none;
+  border-radius:999px;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--verde),var(--verde2));
+  color:#fff;
+  font-weight:bold;
+  box-shadow:0 5px 15px rgba(0,0,0,0.6);
+  transition:.4s;
+}
+#welcome .btnWelcome:hover{
+  box-shadow:0 0 50px rgba(52,211,153,0.8);
+  transform:translateY(-3px) scale(1.03);
+}
+
+/* TDJ Container */
+.container{
+  display:none;
+  padding:50px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+/* Cards TDJ */
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;margin-bottom:50px;}
+.card{background:rgba(0,0,0,0.5);border-radius:25px;padding:30px;width:300px;box-shadow:0 0 40px rgba(16,185,129,0.6);transition:.5s;}
+.card:hover{transform:translateY(-10px) scale(1.05);box-shadow:0 0 60px rgba(16,185,153,0.8);}
+.card h3{text-decoration:underline;text-shadow:0 0 10px #000;margin-bottom:10px;}
+.card p, .card ul{margin:10px 0;}
+.btn{display:block;width:100%;padding:15px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--verde),var(--verde2));color:#fff;font-weight:bold;text-shadow:0 0 10px #000;box-shadow:0 5px 15px rgba(0,0,0,0.5);transition:.3s;margin-top:10px;}
+.btn:hover{box-shadow:0 0 40px rgba(52,211,153,0.7);}
+
+/* Formulário */
+form{background:rgba(0,0,0,0.5);padding:30px;border-radius:25px;max-width:900px;margin:50px auto;box-shadow:0 0 40px rgba(16,185,129,0.6);}
+form input, form textarea{width:100%;padding:12px;margin-bottom:15px;border-radius:15px;border:none;font-size:1em;background:rgba(255,255,255,0.1);color:#fff;}
+form textarea{resize:none;}
+form input::placeholder, form textarea::placeholder{color:rgba(255,255,255,0.7);}
+#submissions{max-width:1000px;margin:0 auto;padding:20px;}
+.submission{background:rgba(0,0,0,0.4);padding:15px;margin-bottom:15px;border-radius:15px;box-shadow:0 0 20px rgba(16,185,129,0.5);}
+.submission p{margin:5px 0;}
+footer{text-align:center;padding:30px;color:#aaa;margin-top:50px;}
+@media(max-width:768px){.cards{flex-direction:column;align-items:center;}.card{width:90%;}}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- Botão voltar -->
+<button id="voltarBtn" onclick="mostrarWelcome()">Voltar</button>
+
+<!-- Tela de boas-vindas -->
+<div id="welcome">
+  <h1>🇯🇲 TDJ - Tropa da Jamaica</h1>
+  <button class="btnWelcome" onclick="abrirTDJ()">Ver como entrar</button><br>
+  <button class="btnWelcome" onclick="window.open('https://discord.gg/hv5Mh4aw','_blank')">Entrar no Discord</button>
+</div>
+
+<!-- Container TDJ -->
+<div class="container" id="tdjContainer">
+<h1>🇯🇲 TDJ - Tropa da Jamaica</h1>
+
+<div class="cards">
+  <div class="card">
+    <h3>Benefícios</h3>
+    <ul>
+      <li>Facção sempre ativa</li>
+      <li>Sorteios de veículos raros</li>
+      <li>Produção própria de armas e itens</li>
+      <li>Uniforme exclusivo</li>
+      <li>Ações organizadas e constantes</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Requisitos</h3>
+    <ul>
+      <li>Saber regras de RP</li>
+      <li>Conhecer normas de ação</li>
+      <li>Respeitar regras do Discord</li>
+      <li>Ser ativo na cidade</li>
+      <li>Ser leal à TDJ</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Como Entrar</h3>
+    <button class="btn" onclick="window.open('https://discord.gg/hv5Mh4aw','_blank')">Entrar no Discord</button>
+  </div>
+</div>
+
+<!-- Formulário completo -->
+<form id="formulario">
+<h3>Formulário de Inscrição</h3>
+<input type="text" id="nick" placeholder="Nick no jogo" required>
+<input type="text" id="nome" placeholder="Nome" required>
+<input type="text" id="discord" placeholder="Nome no Discord (ex: nome#0000)" required>
+<input type="text" id="rdm" placeholder="O que é RDM e VDM?" required>
+<input type="text" id="cl" placeholder="O que é CL?" required>
+<input type="text" id="darkrp" placeholder="O que é dark RP?" required>
+<input type="text" id="antirp" placeholder="O que é anti RP?" required>
+<input type="text" id="acaoPolicial" placeholder="Se um policial te abordar, o que fará?" required>
+<input type="number" id="idade" placeholder="Idade" required>
+<input type="text" id="tempoRP" placeholder="Há quanto tempo joga RP?" required>
+<input type="text" id="faccaoAnterior" placeholder="Já participou de alguma facção? Qual?" required>
+<input type="text" id="porqueEntrar" placeholder="Por que quer entrar na nossa facção?" required>
+<input type="text" id="oQueAgrega" placeholder="O que você pode agregar para a facção?" required>
+<input type="text" id="estiloRP" placeholder="Descreva seu estilo de RP / jeito de jogar" required>
+<input type="text" id="ordemSuperior" placeholder="Como age ao receber ordem de superior?" required>
+<input type="text" id="aposMorrer" placeholder="Se morrer em ação, o que faz após?" required>
+<input type="text" id="diasHorarios" placeholder="Dias e horários que costuma jogar" required>
+<input type="text" id="discordMicrofone" placeholder="Possui Discord e microfone funcional?" required>
+<input type="text" id="tempoFicar" placeholder="Pretende ficar quanto tempo na facção?" required>
+<textarea id="algoMais" placeholder="Algo a mais que queira acrescentar"></textarea>
+<button type="submit" class="btn">Enviar</button>
+</form>
+
+<!-- Submissions -->
+<div id="submissions">
+<h3 style="text-align:center;margin-bottom:20px;">Submissões Recebidas</h3>
+</div>
+
+<footer>Site criado por Snow Sintonia RP</footer>
+
+<script>
+// Partículas verdes caindo
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+resize();window.onresize=resize;
+
+let particles = [];
+for(let i=0;i<200;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,vy:Math.random()*0.3+0.2});}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.y+=p.vy;
+    if(p.y>canvas.height)p.y=0;
+    ctx.fillStyle='rgba(16,185,129,0.6)';
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// Mostrar TDJ
+function abrirTDJ(){
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('tdjContainer').style.display='block';
+  document.getElementById('voltarBtn').style.display='block';
+  window.scrollTo(0,0);
+}
+
+function mostrarWelcome(){
+  document.getElementById('tdjContainer').style.display='none';
+  document.getElementById('welcome').style.display='flex';
+  document.getElementById('voltarBtn').style.display='none';
+  window.scrollTo(0,0);
+}
+
+// Submissions estilo feedback
+const form = document.getElementById('formulario');
+const submissions = document.getElementById('submissions');
+let arr=[];
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  const sub = {
+    nick:document.getElementById('nick').value,
+    nome:document.getElementById('nome').value,
+    discord:document.getElementById('discord').value,
+    rdm:document.getElementById('rdm').value,
+    cl:document.getElementById('cl').value,
+    darkrp:document.getElementById('darkrp').value,
+    antirp:document.getElementById('antirp').value,
+    acaoPolicial:document.getElementById('acaoPolicial').value,
+    idade:document.getElementById('idade').value,
+    tempoRP:document.getElementById('tempoRP').value,
+    faccaoAnterior:document.getElementById('faccaoAnterior').value,
+    porqueEntrar:document.getElementById('porqueEntrar').value,
+    oQueAgrega:document.getElementById('oQueAgrega').value,
+    estiloRP:document.getElementById('estiloRP').value,
+    ordemSuperior:document.getElementById('ordemSuperior').value,
+    aposMorrer:document.getElementById('aposMorrer').value,
+    diasHorarios:document.getElementById('diasHorarios').value,
+    discordMicrofone:document.getElementById('discordMicrofone').value,
+    tempoFicar:document.getElementById('tempoFicar').value,
+    algoMais:document.getElementById('algoMais').value
+  };
+  arr.unshift(sub);
+  submissions.innerHTML = '<h3 style="text-align:center;margin-bottom:20px;">Submissões Recebidas</h3>';
+  arr.forEach(f=>{
+    const div = document.createElement('div');
+    div.className='submission';
+    div.innerHTML=`
+      <p><strong>Nick:</strong> ${f.nick}</p>
+      <p><strong>Nome:</strong> ${f.nome}</p>
+      <p><strong>Discord:</strong> ${f.discord}</p>
+      <p><strong>RDM/VDM:</strong> ${f.rdm}</p>
+      <p><strong>CL:</strong> ${f.cl}</p>
+      <p><strong>Dark RP:</strong> ${f.darkrp}</p>
+      <p><strong>Anti RP:</strong> ${f.antirp}</p>
+      <p><strong>Ação policial:</strong> ${f.acaoPolicial}</p>
+      <p><strong>Idade:</strong> ${f.idade}</p>
+      <p><strong>Tempo RP:</strong> ${f.tempoRP}</p>
+      <p><strong>Facção anterior:</strong> ${f.faccaoAnterior}</p>
+      <p><strong>Por que entrar:</strong> ${f.porqueEntrar}</p>
+      <p><strong>O que agrega:</strong> ${f.oQueAgrega}</p>
+      <p><strong>Estilo RP:</strong> ${f.estiloRP}</p>
+      <p><strong>Ordem superior:</strong> ${f.ordemSuperior}</p>
+      <p><strong>Após morrer:</strong> ${f.aposMorrer}</p>
+      <p><strong>Dias/horários:</strong> ${f.diasHorarios}</p>
+      <p><strong>Discord/microfone:</strong> ${f.discordMicrofone}</p>
+      <p><strong>Tempo na facção:</strong> ${f.tempoFicar}</p>
+      <p><strong>Algo a mais:</strong> ${f.algoMais}</p>
+    `;
+    submissions.appendChild(div);
+  });
+  form.reset();
+});
+</script>
+</body>
+</html>
